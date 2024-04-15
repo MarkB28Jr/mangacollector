@@ -17,11 +17,11 @@
         <nav>
             <div class="nav-wrapper">
                 <ul>
-                    <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Manga Collector</a></li>
+                    <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Manga Collector</a></li>
                 </ul>
                 <ul class="right">
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/mangas">View All My Mangas</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'mangas' %}">View All My Mangas</a></li>
                 </ul>
             </div>
         </nav>
