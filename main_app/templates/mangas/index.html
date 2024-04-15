@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Manga List</h1>
+
+{% for manga in mangas %}
+  <div class="card">
+    <a href="/mangas/{{ manga.id }}">
+    <div class="card-content">
+      <span class="card-title"><strong><u>{{ manga.name }}</u></strong></span>
+      <p><strong>Genre: {{ manga.genre }}</strong></p>
+      <p><strong>Description: {{ manga.description }}</strong></p>
+      <p><strong>Chapters: {{ manga.chapters }}</strong></p>
+    </div>
+  </a>
+  </div>
+{% endfor %}
+
+{% endblock %}
