@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import Manga, Read
-from .forms import ReadMe
+from .forms import ReadMeForm
 
 # Create your views here.
 def home(request):
@@ -17,13 +17,10 @@ def mangas_index(request):
 
 def mangas_detail(request, manga_id):
     manga = Manga.objects.get(id=manga_id)
-    id_list = manga.reads.all().values_list('id')
-    reads_manga_doesnt_have = Read.objects.exclude(id__in=id_list)
+    # id_list = manga.read.all().values_list('id')
+    # reads_manga_doesnt_have = Read.objects.exclude(id__in=id_list)
     readme_form = ReadMeForm()
-    return render(request, 'mangas/detail.html', {
-        'manga': manga, 'readme_form': readme_form,
-        'reads': reads_manage_doesnt_have
-    })
+    return render(request, 'mangas/detail.html', { 'manga': manga, 'readme_form': readme_form })
 
 
 def add_readme(request, manga_id):

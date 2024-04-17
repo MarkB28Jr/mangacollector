@@ -40,8 +40,8 @@ class ReadMe(models.Model):
 
 class Read(models.Model):
     name = models.CharField(max_length=50)
-    position = models.CharField(max_length=20)
+    position = models.TextField(max_length=20)
     def __str__(self):
         return self.name
     def get_absolute_url(self):
-        return reverse('read_detail', kwargs={'pk': self.id})
+        return reverse('reads_detail', kwargs={'pk': self.id})
