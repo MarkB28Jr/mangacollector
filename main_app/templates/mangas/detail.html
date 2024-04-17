@@ -3,13 +3,121 @@
 
 <h1>Manga Details</h1>
 
-<div class="card">
-        <div class="card-content">
-            <span class="card-title"><strong><u>{{ manga.name }}</u></strong></span>
-            <p><strong>Genre: {{ manga.genre }}</strong></p>
-            <p><strong>Description: {{ manga.description }}</strong></p>
-            <p><strong>Chapters: {{ manga.chapters }}</strong></p>
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title"><strong><u>{{ manga.name }}</u></strong></span>
+                <p><strong>Genre: {{ manga.genre }}</strong></p>
+                <p><strong>Description: {{ manga.description }}</strong></p>
+                <p><strong>Chapters: {{ manga.chapter }}</strong></p>
+            </div>
+            <div class="card-action">
+                <a href="{% url 'mangas_update' manga.id %}">Edit</a>
+                <a href="{% url 'mangas_delete' manga.id %}">Delete</a>
+            </div>
         </div>
-</div>
 
+    </div>
+    <hr>
+    <div class="col s6">
+        <form action="{% url 'add_readme' manga.id %}" method="POST">
+            {% csrf_token %}
+            <!-- Render the inputs -->
+            {{ readme_form.as_p }}
+            <input type="submit" class="btn" value="Add ReadMe">
+        </form>
+        <br>
+        {% if cat.fed_for_today %}
+        <div class="card-panel teal-text center-align">{{cat.name}} has been fed all meals for today</div>
+        {% else %}
+        <div class="card-panel red-text center-align">{{cat.name}} might be hungry</div>
+        {% endif %}
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Read</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for readme in manga.readme_set.all %}
+                <tr>
+                    <td>{{readme.date}}</td>
+                    <td>{{readme.get_read_display}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col s6">
+            <h3>{{ manga.name }}'s Mangas</h3>
+            {% if manga.reads.count %}
+            {% for read in manga.reads.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div> A {{ read.name }} {{ read.position }} </div>
+                    </span>
+                </div>
+                <div class="card-action">
+                    <form action="{% url 'remove_read' manga.id read.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="waves-effect waves-light btn-small">REMOVE
+                            <i class="material-icons right">delete</i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h5>No Reads :crying_cat_face:</h5>
+            {% endif %}
+        </div>
+        <div class="col s6">
+            <h3>Available Toys</h3>
+            {% if reads.count %}
+            {% for read in reads.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <div> A {{ read.name }} {{ read.position }} </div>
+                    </span>
+                </div>
+                <div class="card-action">
+                    <form action="{% url 'assoc_read' manga.id read.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Add<i class="material-icons right">add</i></button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h5>{{cat.name}} Already Has All Toys Available</h5>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script>
+        const dateEl = document.getElementById('id_date');
+        M.Datepicker.init(dateEl, {
+            format: 'yyyy-mm-dd',
+            defaultDate: new Date(),
+            setDefaultDate: true,
+            autoClose: true
+        });
+        const selectEl = document.getElementById('id_read');
+        M.FormSelect.init(selectEl);
+    </script>
+</div>
 {% endblock %}
